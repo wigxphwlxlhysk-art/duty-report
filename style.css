@@ -1,0 +1,13 @@
+body { font-family: 'Sarabun', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 20px; margin: 0; }
+.container { background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 550px; padding: 25px; border-top: 8px solid #007bff; }
+h2 { color: #333; text-align: center; margin-bottom: 20px; font-size: 22px; }
+.duty-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 14px; }
+.duty-table th, .duty-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; }
+.duty-table th { background-color: #f8f9fa; color: #555; width: 100px; }
+.today-highlight { background-color: #e7f3ff !important; color: #007bff !important; font-weight: bold; }
+.form-section { background: #fdfdfd; padding: 20px; border-radius: 10px; border: 1px solid #eee; }
+label { display: block; margin-bottom: 8px; font-weight: bold; color: #444; }
+input[type="text"], input[type="file"] { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+.btn-submit { background-color: #28a745; color: white; border: none; padding: 16px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
+.btn-submit:hover { background-color: #218838; }
+#status { text-align: center; margin-top: 15px; font-weight: bold; }
