@@ -11,7 +11,7 @@ async function sendReport() {
     const statusDiv = document.getElementById('status');
 
     const token = "8664131894:AAH63X5-GjC8QkaIry-qvP5xwZ5IWgE-Nzo"; 
-    const chatId = "7541921308"; 
+    const chatId = "-5263782545"; 
 
     if (!name || photoFiles.length === 0) {
         alert("กรุณาระบุชื่อและแนบรูปภาพอย่างน้อย 1 รูปครับ");
