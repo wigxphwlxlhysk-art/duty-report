@@ -45,7 +45,7 @@ async function sendReport() {
     const statusDiv = document.getElementById('status');
     
     const token = "8664131894:AAH63X5-GjC8QkaIry-qvP5xwZ5IWgE-Nzo"; 
-    const chatId = "-5052461285"; 
+    const chatId = "-5269240224"; 
 
     if (!name || photoFiles.length === 0) {
         alert("กรุณาระบุชื่อผู้รายงานและแนบรูปภาพด้วยครับ");
