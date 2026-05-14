@@ -73,7 +73,7 @@ async function sendReport() {
     let reportText = `📝 รายงานการปฏิบัติหน้าที่\n`;
     reportText += `👤 ผู้ส่ง: ${name}\n\n`;
     reportText += `✅ มาทำเวร:\n\t${present.length > 0 ? present.join('\n\t') : '-'}\n\n`;
-    reportText += `🟡 ลาทำเวร:\n\t${leave.length > 0 ? leave.join('\n\t') : '-'}\n\n`;
+    reportText += `🟡 ลา:\n\t${leave.length > 0 ? leave.join('\n\t') : '-'}\n\n`;
     reportText += `❌ ไม่มาทำ (ขาด):\n\t${absent.length > 0 ? absent.join('\n\t') : '-'}\n\n`;
     reportText += `📅 วันที่: ${new Date().toLocaleDateString('th-TH')}\n`;
     reportText += `⏰ เวลา: ${new Date().toLocaleTimeString('th-TH')}`;
