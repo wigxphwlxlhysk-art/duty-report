@@ -1,4 +1,4 @@
-// ข้อมูลรายชื่อเวรแต่ละวัน 
+// ข้อมูลรายชื่อเวรแต่ละวัน
 const dutyData = {
     1: { day: "วันจันทร์", names: ["จูเนียร์", "เก้า", "ขันติ", "ออม", "เห็ดหอม", "พร้อม", "คริสตัล"] },
     2: { day: "วันอังคาร", names: ["นิว", "ยิ้ม", "ขวัญข้าว", "ออก้า", "กิ้บ", "แฮคกี้"] },
@@ -10,13 +10,30 @@ const dutyData = {
 const today = new Date().getDay();
 const dutyListBody = document.getElementById('duty-list');
 
+// สร้างแถวรายชื่อพร้อมสถานะ 3 แบบ
 if (today >= 1 && today <= 5) {
     const currentDuty = dutyData[today];
-    let html = `<tr class="today-highlight"><td style="font-weight:bold; color:#0984e3;">${currentDuty.day}</td><td>`;
-    currentDuty.names.forEach((name) => {
-        html += `<label class="name-item"><input type="checkbox" class="attendance-check" value="${name}"><span>${name}</span></label>`;
+    let html = "";
+    currentDuty.names.forEach((name, index) => {
+        html += `
+        <tr>
+            <td><strong>${name}</strong></td>
+            <td>
+                <div class="status-group">
+                    <label class="status-option label-present">
+                        <input type="radio" name="status-${index}" value="มา" checked> มา
+                    </label>
+                    <label class="status-option label-leave">
+                        <input type="radio" name="status-${index}" value="ลา"> ลา
+                    </label>
+                    <label class="status-option label-absent">
+                        <input type="radio" name="status-${index}" value="ขาด"> ขาด
+                    </label>
+                    <input type="hidden" class="student-name" value="${name}">
+                </div>
+            </td>
+        </tr>`;
     });
-    html += `</td></tr>`;
     dutyListBody.innerHTML = html;
 } else {
     dutyListBody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px;">🎉 วันนี้ไม่มีเวรครับ พักผ่อนให้เต็มที่!</td></tr>`;
@@ -30,27 +47,39 @@ async function sendReport() {
     const token = "8664131894:AAH63X5-GjC8QkaIry-qvP5xwZ5IWgE-Nzo"; 
     const chatId = "-5263782545"; 
 
-    const checkedNames = Array.from(document.querySelectorAll('.attendance-check:checked')).map(el => el.value);
-    const allNames = dutyData[today] ? dutyData[today].names : [];
-    const missingNames = allNames.filter(n => !checkedNames.includes(n));
-
     if (!name || photoFiles.length === 0) {
         alert("กรุณาระบุชื่อผู้รายงานและแนบรูปภาพด้วยครับ");
         return;
     }
 
+    // รวบรวมข้อมูลสถานะ
+    let present = [];
+    let leave = [];
+    let absent = [];
+
+    const rows = document.querySelectorAll('.status-group');
+    rows.forEach((group, index) => {
+        const studentName = group.querySelector('.student-name').value;
+        const status = group.querySelector(`input[name="status-${index}"]:checked`).value;
+        
+        if (status === "มา") present.push(studentName);
+        else if (status === "ลา") leave.push(studentName);
+        else if (status === "ขาด") absent.push(studentName);
+    });
+
     statusDiv.innerText = "กำลังส่งรายงาน...";
+
+    // จัดรูปแบบรายงาน
+    let reportText = `📝 รายงานการปฏิบัติหน้าที่\n`;
+    reportText += `👤 ผู้ส่ง: ${name}\n\n`;
+    reportText += `✅ มาทำเวร:\n\t${present.length > 0 ? present.join('\n\t') : '-'}\n\n`;
+    reportText += `🟡 ลาทำเวร:\n\t${leave.length > 0 ? leave.join('\n\t') : '-'}\n\n`;
+    reportText += `❌ ไม่มาทำ (ขาด):\n\t${absent.length > 0 ? absent.join('\n\t') : '-'}\n\n`;
+    reportText += `📅 วันที่: ${new Date().toLocaleDateString('th-TH')}\n`;
+    reportText += `⏰ เวลา: ${new Date().toLocaleTimeString('th-TH')}`;
 
     const formData = new FormData();
     formData.append('chat_id', chatId);
-
-    // จัดรูปแบบรายงานตามที่คุณต้องการ (เว้นวรรคและขึ้นบรรทัดใหม่)
-    let reportText = `📝 รายงานการปฏิบัติหน้าที่\n`;
-    reportText += `👤 ผู้ส่ง: ${name}\n\n`;
-    reportText += `✅ มาทำเวร:\n\t${checkedNames.length > 0 ? checkedNames.join('\n\t') : 'ไม่มี'}\n\n`;
-    reportText += `❌ ไม่มาทำ:\n\t${missingNames.length > 0 ? missingNames.join('\n\t') : 'ไม่มี'}\n\n`;
-    reportText += `📅 วันที่: ${new Date().toLocaleDateString('th-TH')}\n`;
-    reportText += `⏰ เวลา: ${new Date().toLocaleTimeString('th-TH')}`;
 
     const media = [];
     for (let i = 0; i < photoFiles.length; i++) {
@@ -73,7 +102,7 @@ async function sendReport() {
 
         if (response.ok) {
             statusDiv.innerText = "✅ ส่งรายงานสำเร็จ!";
-            alert("This case is closed"); //
+            alert("This case is closed");
             location.reload();
         } else {
             statusDiv.innerText = "❌ ส่งไม่สำเร็จ";
