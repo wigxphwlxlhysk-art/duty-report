@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบรายงานส่งเวร - ม.4/2</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+    <title>SMC-AI SERVER - ระบบรายงานส่งเวร</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<div class="cyber-grid"></div>
+
 <div class="container">
     <header>
-        <h1>🧹 ระบบรายงานส่งเวร</h1>
+        <div class="ai-badge">SMC-AI SYSTEM CORE</div>
+        <h1>🧹 ระบบรายงานส่งเวร SMC-AI</h1>
         <p>ระดับชั้นมัธยมศึกษาปีที่ 4/2</p>
     </header>
 
-    <section class="duty-section">
-        <h2>📅 เช็คชื่อผู้ปฏิบัติหน้าที่วันนี้</h2>
+    <section class="duty-section hover-bounce">
+        <h2>📅 เช็คชื่อผู้ปฏิบัติหน้าที่วันนี้ [SMC-AI]</h2>
         <div class="table-wrapper">
             <table class="duty-table">
                 <thead>
@@ -26,14 +29,13 @@
                     </tr>
                 </thead>
                 <tbody id="duty-list">
-                    <!-- รายชื่อจะแสดงที่นี่ -->
                 </tbody>
             </table>
         </div>
     </section>
 
-    <section class="form-section">
-        <h2>📤 ส่งหลักฐานและรายงาน</h2>
+    <section class="form-section hover-bounce">
+        <h2>📤 ส่งหลักฐานและรายงานระบบ SMC-AI</h2>
         <div class="input-group">
             <label for="photoInput">📸 แนบรูปถ่ายหลักฐาน</label>
             <input type="file" id="photoInput" accept="image/*" multiple>
@@ -47,6 +49,14 @@
         <button class="btn-submit" onclick="sendReport()">🚀 ส่งรายงานเข้ากลุ่ม Telegram</button>
         <div id="status"></div>
     </section>
+</div>
+
+<div id="custom-popup" class="popup-overlay">
+    <div class="popup-box">
+        <div class="popup-icon" style="color: #00b894;">✅</div>
+        <h2>SMC-AI SYSTEM</h2>
+        <p class="popup-message">This case is closed</p>
+    </div>
 </div>
 
 <script src="Java.js"></script> 
