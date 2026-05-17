@@ -1,9 +1,9 @@
-// ข้อมูลรายชื่อเวรแต่ละวัน
+// ข้อมูลรายชื่อเวรแต่ละวัน ม.4/2
 const dutyData = {
     1: { day: "วันจันทร์", names: ["นายวิศรุต แขมคำ (จูเนียร์)", "นางสาวศุพัสษร นิลดวง (เก้า)", "นายจิรสิน วิทยารักษ์ (ขันติ)", "นายพงศกร ไชยรักษ์ (ออม)", "นางสาวจิราพัชร ผิวอ่อน (เห็ดหอม)", "นายวรินทร อัมพร (พร้อม)", "นายพัฒนศักดิ์ กองทุ่งมน (คริสตัล)"] },
     2: { day: "วันอังคาร", names: ["นางสาวนภัสวรรณ จงกลศรี (นิว)", "นางสาวอพินญา เตียวระสิงห์ (ยิ้ม)", "นางสาวสุพิชชา บุญอ่วม (ขวัญข้าว)", "นางสาวธวัลรัตน์ เป็นมงคล (ออก้า)", "นางสาวปาลิตา บุญด้วง (กิ๊บ)", "นางสาวปริยาภัทร วงศ์จีน (แฮคกี้)"] },
     3: { day: "วันพุธ", names: ["นายเจริญวัฒน์ สีบัว (ยอด)", "นายกวีวัธน์ บัวทอง (ไบเบิ้ล)", "นายชยพรรธน์ สุราราษฎร์ (เจา)", "นายธนาธิป วิริยะกูล (อั่งเปา)", "นายภัทรกร เทียมใสย (แมมมอธ)", "นายนพรุจ จันทร์ทรง (กีต้าร์)"] },
-    4: { day: "วันพฤหัสบดี", names: ["นางสาวญาณิศา ชุมนุม ()", "นางสาวปิยะรัตน์ ภูมี (น้ำใส)", "นางสาวกาญจนา สิตวัน (กิ๊บ)" , "นายฐิติวัฒน์ บุญศรี (ต๊ะ)"] },
+    4: { day: "วันพฤหัสบดี", names: ["นางสาวญาณิศา ชุมนุม (น้ำพั้น)", "นางสาวปิยะรัตน์ ภูมี (น้ำใส)", "นางสาวกาญจนา สิตวัน (กิ๊บ)" , "นายฐิติวัฒน์ บุญศรี (ต๊ะ)"] },
     5: { day: "วันศุกร์", names: ["นางสาววรัญญา อุทัยศรี (ปุ๋ย)", "นางสาวปริณดา นาคประโคน (เนตร)", "นางสาวอัญรินทร์ วงษาชัย (แพรวา)", "นางสาวจิรัชยา ดาพันธ์ (แองเจิ้ล)", "นางสาวภัทรวดี ผ่องศรี (ใบเฟิร์น)", "นางสาวประภาวรรณ สุตาวงศ์ (ภา)", "นายบวรพจน์ ยืนสุข (อาชิ)"] }
 };
 
@@ -16,18 +16,18 @@ if (today >= 1 && today <= 5) {
     let html = "";
     currentDuty.names.forEach((name, index) => {
         html += `
-        <tr>
+        <tr class="fade-in-up" style="animation-delay: ${index * 0.1}s">
             <td><strong>${name}</strong></td>
             <td>
                 <div class="status-group">
                     <label class="status-option label-present">
-                        <input type="radio" name="status-${index}" value="มา" checked> มา
+                        <input type="radio" name="status-${index}" value="มา" checked> <span>มา</span>
                     </label>
                     <label class="status-option label-leave">
-                        <input type="radio" name="status-${index}" value="ลา"> ลา
+                        <input type="radio" name="status-${index}" value="ลา"> <span>ลา</span>
                     </label>
                     <label class="status-option label-absent">
-                        <input type="radio" name="status-${index}" value="ขาด"> ขาด
+                        <input type="radio" name="status-${index}" value="ขาด"> <span>ขาด</span>
                     </label>
                     <input type="hidden" class="student-name" value="${name}">
                 </div>
@@ -36,7 +36,7 @@ if (today >= 1 && today <= 5) {
     });
     dutyListBody.innerHTML = html;
 } else {
-    dutyListBody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px;">🎉 วันนี้ไม่มีเวรครับ พักผ่อนให้เต็มที่!</td></tr>`;
+    dutyListBody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding:20px; color:#94a3b8;">🎉 วันนี้ไม่มีเวรครับ พักผ่อนให้เต็มที่!</td></tr>`;
 }
 
 async function sendReport() {
@@ -52,7 +52,6 @@ async function sendReport() {
         return;
     }
 
-    // รวบรวมข้อมูลสถานะ
     let present = [];
     let leave = [];
     let absent = [];
@@ -67,10 +66,11 @@ async function sendReport() {
         else if (status === "ขาด") absent.push(studentName);
     });
 
-    statusDiv.innerText = "กำลังส่งรายงาน...";
+    statusDiv.innerText = "กำลังทำงาน: กำลังส่งรายงานเข้ากลุ่ม...";
+    statusDiv.style.color = "#00b894";
 
-    // จัดรูปแบบรายงาน
-    let reportText = `📝 รายงานการปฏิบัติหน้าที่\n`;
+    // อัปเดตหัวข้อหัวรายงานให้ระบุ SMC-AI ชัดเจน
+    let reportText = `📝 [SMC-AI] รายงานการปฏิบัติหน้าที่ ม.4/2\n`;
     reportText += `👤 ผู้ส่ง: ${name}\n\n`;
     reportText += `✅ มาทำเวร:\n\t${present.length > 0 ? present.join('\n\t') : '-'}\n\n`;
     reportText += `🟡 ลา:\n\t${leave.length > 0 ? leave.join('\n\t') : '-'}\n\n`;
@@ -101,13 +101,23 @@ async function sendReport() {
         });
 
         if (response.ok) {
-            statusDiv.innerText = "✅ ส่งรายงานสำเร็จ!";
-            alert("This case is closed");
-            location.reload();
+            statusDiv.innerText = "สำเร็จ: ส่งรายงานเรียบร้อย";
+            statusDiv.style.color = "#00b894";
+            
+            const popup = document.getElementById('custom-popup');
+            popup.classList.add('active');
+            
+            setTimeout(() => {
+                popup.classList.remove('active');
+                location.reload();
+            }, 3000);
+
         } else {
-            statusDiv.innerText = "❌ ส่งไม่สำเร็จ";
+            statusDiv.innerText = "เกิดข้อผิดพลาด: ไม่สามารถส่งข้อมูลได้";
+            statusDiv.style.color = "#ff7675";
         }
     } catch (error) {
-        statusDiv.innerText = "❌ เกิดข้อผิดพลาด";
+        statusDiv.innerText = "เกิดข้อผิดพลาด: การเชื่อมต่อล้มเหลว";
+        statusDiv.style.color = "#ff7675";
     }
 }
